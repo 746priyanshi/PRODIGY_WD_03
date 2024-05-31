@@ -1,0 +1,126 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Contact {
+private:
+    string name;
+    string phoneNumber;
+    string email;
+
+public:
+    Contact(string name, string phoneNumber, string email) : name(name), phoneNumber(phoneNumber), email(email) {}
+
+    string getName() const {
+        return name;
+    }
+
+    string getPhoneNumber() const {
+        return phoneNumber;
+    }
+
+    string getEmail() const {
+        return email;
+    }
+
+    void setPhoneNumber(string phoneNumber) {
+        this->phoneNumber = phoneNumber;
+    }
+
+    void setEmail(string email) {
+        this->email = email;
+    }
+
+    void display() const {
+        cout << "Name: " << name << ", Phone: " << phoneNumber << ", Email: " << email << endl;
+    }
+};
+
+class ContactManager {
+private:
+    vector<Contact> contacts;
+
+public:
+    void addContact(const Contact& contact) {
+        contacts.push_back(contact);
+    }
+
+    void viewContacts() const {
+        for (const auto& contact : contacts) {
+            contact.display();
+        }
+    }
+
+    void editContact(int index, string newPhoneNumber, string newEmail) {
+        contacts[index].setPhoneNumber(newPhoneNumber);
+        contacts[index].setEmail(newEmail);
+        cout << "Contact updated successfully!" << endl;
+    }
+
+    void deleteContact(int index) {
+        contacts.erase(contacts.begin() + index);
+        cout << "Contact deleted successfully!" << endl;
+    }
+};
+
+int main() {
+    ContactManager contactManager;
+    int choice;
+
+    while (true) {
+        cout << "\nChoose an option:" << endl;
+        cout << "1. Add contact" << endl;
+        cout << "2. View contacts" << endl;
+        cout << "3. Edit contact" << endl;
+        cout << "4. Delete contact" << endl;
+        cout << "5. Exit" << endl;
+
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string name, phoneNumber, email;
+                cout << "Enter name: ";
+                cin >> name;
+                cout << "Enter phone number: ";
+                cin >> phoneNumber;
+                cout << "Enter email: ";
+                cin >> email;
+                Contact newContact(name, phoneNumber, email);
+                contactManager.addContact(newContact);
+                break;
+            }
+            case 2:
+                contactManager.viewContacts();
+                break;
+            case 3: {
+                int index;
+                string newPhoneNumber, newEmail;
+                cout << "Enter index of contact to edit: ";
+                cin >> index;
+                cout << "Enter new phone number: ";
+                cin >> newPhoneNumber;
+                cout << "Enter new email: ";
+                cin >> newEmail;
+                contactManager.editContact(index, newPhoneNumber, newEmail);
+                break;
+            }
+            case 4: {
+                int index;
+                cout << "Enter index of contact to delete: ";
+                cin >> index;
+                contactManager.deleteContact(index);
+                break;
+            }
+            case 5:
+                cout << "Exiting..." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice, please try again." << endl;
+        }
+    }
+
+    return 0;
+}
